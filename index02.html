@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Science & Tech Fusion Hub</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: white;
+      text-align: center;
+    }
+    header {
+      padding: 40px 20px;
+      background: rgba(0,0,0,0.5);
+    }
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    .collage {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 30px;
+      padding: 0 20px;
+    }
+    .collage-item {
+      width: 270px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .collage img {
+      width: 250px;
+      height: 180px;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      object-fit: cover;
+    }
+    .collage img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,255,255,0.8);
+    }
+    .collage img.active {
+      transform: scale(1.2);
+      z-index: 2;
+      box-shadow: 0 0 30px rgba(255,255,255,0.9);
+    }
+    .collage p {
+      width: 100%;
+      color: #fff;
+      background: rgba(0,0,0,0.7);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      text-align: left;
+      font-weight: 400;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    section {
+      margin: 40px 20px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    section h2 {
+      font-size: 2em;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    footer {
+      padding: 20px;
+      background: rgba(0,0,0,0.5);
+      font-size: 1.0em;
+      margin-top: 60px;
+    }
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.5em;
+      }
+      header p {
+        font-size: 1.1em;
+      }
+      .collage {
+        flex-direction: row;
+        gap: 15px;
+      }
+      .collage-item {
+        width: 220px;
+      }
+      .collage img {
+        width: 210px;
+        height: 160px;
+      }
+      .collage img.active {
+        transform: scale(1.05);
+      }
+      .collage p {
+        font-size: 0.9rem;
+        padding: 8px;
+        line-height: 1.3;
+      }
+      section h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      header {
+        padding: 30px 15px;
+      }
+      header h1 {
+        font-size: 2em;
+      }
+      .collage {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .collage-item {
+        flex-direction: column;
+        align-items: center;
+      }
+      .collage img {
+        width: 280px;
+        height: 205px;
+      }
+      .collage img.active {
+        transform: scale(1.05);
+      }
+      .collage p {
+        width: auto;
+        max-width: 280px;
+        max-width: 90vw;
+        font-size: 0.95rem;
+        padding: 8px;
+        line-height: 1.3;
+      }
+      section {
+        margin: 30px 10px;
+      }
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90vh;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: zoomIn 0.3s;
+    }
+    @keyframes zoomIn {
+      from { transform: translate(-50%, -50%) scale(0.8); }
+      to { transform: translate(-50%, -50%) scale(1); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+      transition: color 0.3s;
+    }
+    .modal-close:hover {
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Science & Tech Fusion Hub</h1>
+    <p>Where Biology, Chemistry, and IT Collide!</p>
+  </header>
+
+  <!-- Biology Section -->
+  <section id="biology">
+    <h2>Biology: Unlocking the Secrets of Life</h2>
+    <div class="collage">
+      <div class="collage-item">
+      <img src="Biology/Cell Structures (img1).webp" alt="Cell Structure">
+        <p>"All cells, whether prokaryotic or eukaryotic, share some basic features: a cell membrane, cytoplasm, 
+          and genetic material. Eukaryotic cells, found in plants, animals, fungi, and protists, contain membrane-bound 
+          organelles that carry out specific tasks, while prokaryotic cells, such as bacteria, lack a nucleus and most 
+          organelles. "</p>
+      </div>
+      <div class="collage-item">
+      <img src="Biology/DNA Double Helix (img2).webp" alt="DNA Double Helix">
+        <p>"The DNA double helix is the iconic structure of deoxyribonucleic acid (DNA), consisting of two strands that 
+          wind around each other, resembling a twisted ladder. Each strand is made up of a sugar-phosphate backbone,
+          with base pairs (adenine with thymine, and guanine with cytosine) forming the rungs of the ladder. 
+          This structure is crucial for the storage and transmission of genetic information in almost all living 
+          organisms."</p>
+      </div>
+      <div class="collage-item">
+      <img src="Biology/process-photosynthesis (img3).jpg" alt="Photosynthesis Diagram">
+        <p>"Photosynthesis is the process by which green plants and some other organisms use sunlight to 
+          synthesize foods with the help of chlorophyll. It involves converting carbon dioxide and water 
+          into glucose and oxygen, releasing energy that sustains life on Earth."</p>
+      </div>
+      <div class="collage-item">
+      <img src="Biology/Human Anatomy (img4).webp" alt="Human Anatomy">
+        <p>"Human anatomy is the scientific study of the structure and morphology of the human body. 
+          It is divided into gross anatomy, which examines structures visible to the naked eye, and microscopic anatomy, 
+          which focuses on cells and tissues. Key concepts include anatomical terminology, body systems, 
+          and their functions, which are essential for medical education and clinical practice. 
+          The human body consists of 12 major systems, including the skeletal, muscular, cardiovascular, 
+          and nervous systems, each playing a vital role in maintaining overall health."</p>
+      </div>
+      <div class="collage-item">
+      <img src="Biology/Ecosystem Illustration (img5).webp" alt="Ecosystem Illustration">
+        <p>"An ecosystem is a biological community of interacting organisms and their physical environment. 
+          It includes all living things (plants, animals, microorganisms) and non-living components 
+          (soil, water, air) in a specific area, functioning as a unit through nutrient cycling and 
+          energy flow."</p>
+      </div>
+      <div class="collage-item">
+      <img src="Biology/Microscope (img6).webp" alt="Microscope">
+        <p>"A microscope is an optical instrument used to view objects that are too small to be seen by the
+           naked eye. It uses lenses to magnify images, allowing scientists to study cells, microorganisms, 
+           and microscopic structures, revolutionizing fields like biology and medicine."</p>
+      </div>
+      <div class="collage-item">
+      <img src="Biology/Genetic Concepts (img7).png" alt="Genetics Concept">
+        <p>"Genetics is the study of genes, genetic variation, and heredity in living organisms. It explores 
+          how traits are passed from parents to offspring, how genes are expressed, and how genetic information 
+          is stored and transmitted through DNA."</p>
+      </div>
+    </div>
+    <p>“From DNA to ecosystems — biology connects it all.”</p>
+  </section>
+
+  <!-- Chemistry Section -->
+  <section id="chemistry">
+    <h2>Chemistry: The Science of Matter</h2>
+    <div class="collage">
+      <div class="collage-item">
+      <img src="chemistry/Chemistry Collage.webp" alt="Chemistry Collage">
+        <p>"Chemistry is the scientific study of matter, its properties, composition, and the changes it 
+          undergoes. It encompasses various subfields including organic, inorganic, physical, and analytical 
+          chemistry, exploring how atoms and molecules interact."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Laboratory Scenes.webp" alt="Laboratory Scenes">
+        <p>"Chemical laboratories are equipped with specialized tools and equipment for conducting experiments, 
+          analyzing substances, and testing hypotheses. Safety protocols, precise measurements, and controlled 
+          environments are essential for accurate results."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Colourful Glasswear.webp" alt="Colorful Glassware">
+        <p>"Laboratory glassware includes beakers, flasks, test tubes, and pipettes used for measuring, mixing, 
+          and heating chemical substances. Different types serve specific purposes in experimental procedures 
+          and quantitative analysis."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/molecular structure.jpg" alt="Molecular Structures">
+        <p>"Molecular structures represent the three-dimensional arrangement of atoms in molecules. Understanding 
+          these structures helps explain chemical properties, reactivity, and biological functions of compounds."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Organic Chemistry.webp" alt="Organic Chemistry Structures">
+        <p>"Organic chemistry studies carbon-containing compounds and their reactions. It forms the basis for 
+          understanding life processes, pharmaceuticals, polymers, and many industrial materials."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Periodic Table.webp" alt="Periodic Table">
+        <p>"The periodic table organizes chemical elements by atomic number and properties. It reveals patterns 
+          in element behavior, electron configurations, and chemical bonding tendencies."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Chemical Bonds.webp" alt="Chemical Bonding Types">
+        <p>"Chemical bonds form when atoms share or transfer electrons. Types include ionic bonds (electron transfer), 
+          covalent bonds (electron sharing), and metallic bonds, determining compound properties."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Organic Molecules.jpg" alt="Organic Molecules">
+        <p>"Organic molecules contain carbon atoms bonded to hydrogen and other elements. They include carbohydrates, 
+          proteins, lipids, and nucleic acids, forming the building blocks of life."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/lab equipment.webp" alt="Laboratory Equipment">
+        <p>"Advanced laboratory equipment like spectrometers, chromatographs, and centrifuges enable precise analysis 
+          of chemical compositions, structures, and reactions at molecular levels."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Chemiical Reactions.png" alt="Chemical Reactions Diagram">
+        <p>"Chemical reactions involve breaking and forming bonds between atoms. They can be exothermic 
+          (releasing energy) or endothermic (absorbing energy), following the law of conservation of mass."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Biochemistry Illustration.webp" alt="Biochemistry Illustration">
+        <p>"Biochemistry applies chemical principles to biological systems, studying metabolic pathways, enzyme 
+          functions, and molecular interactions that sustain life processes."</p>
+      </div>
+      <div class="collage-item">
+      <img src="chemistry/Chemical Processing.png" alt="Industrial Chemistry Process">
+        <p>"Industrial chemistry develops large-scale processes for manufacturing chemicals, pharmaceuticals, 
+          fertilizers, and materials, optimizing efficiency, safety, and environmental impact."</p>
+      </div>
+    </div>
+    <p>“Unlock the reactions that shape our world.”</p>
+  </section>
+
+  <!-- IT Section -->
+  <section id="it">
+    <h2>Information Technology: Powering the Digital Age</h2>
+    <div class="collage">
+      <div class="collage-item">
+      <img src="IT/Computer Network Diagram.webp" alt="Computer Network Diagram">
+        <p>"Computer networks connect devices and systems, enabling data sharing and communication. They include 
+          LANs, WANs, and the internet, using protocols like TCP/IP for reliable data transmission."</p>
+      </div>
+      <div class="collage-item">
+      <img src="IT/Cybersecurity Concept.webp" alt="Cybersecurity Concept">
+        <p>"Cybersecurity protects systems, networks, and data from digital attacks. It involves encryption, 
+          firewalls, intrusion detection, and security policies to safeguard information and maintain privacy."</p>
+      </div>
+      <div class="collage-item">
+      <img src="IT/Data Science Visualization.webp" alt="Data Science Visualization">
+        <p>"Data science extracts insights from large datasets using statistical analysis, machine learning, 
+          and visualization techniques. It helps organizations make data-driven decisions and predictions."</p>
+      </div>
+      <div class="collage-item">
+      <img src="IT/Cloud Computing Graphic.webp" alt="Cloud Computing Graphic">
+        <p>"Cloud computing delivers computing services over the internet, including storage, processing power, 
+          and applications. It offers scalability, cost-efficiency, and accessibility without local infrastructure."</p>
+      </div>
+      <div class="collage-item">
+      <img src="IT/AI Illustration.avif" alt="Artificial Intelligence Illustration">
+        <p>"Artificial Intelligence enables machines to perform tasks that typically require human intelligence, 
+          including learning, reasoning, problem-solving, and natural language processing."</p>
+      </div>
+      <div class="collage-item">
+      <img src="IT/IT Infrastructure.gif" alt="IT Infrastructure Diagram">
+        <p>"IT infrastructure encompasses hardware, software, networks, and facilities supporting information 
+          technology operations. It includes servers, databases, and communication systems essential for 
+          business functions."</p>
+      </div>
+    </div>
+    <p>“From networks to AI — IT drives innovation.”</p>
+  </section>
+
+  <footer>
+    <p>“Discover the building blocks of life, the secrets of matter, and the power of code — all in one place.”</p>
+  </footer>
+  <!-- Modal for enlarged images -->
+  <div id="imageModal" class="modal">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="modalImage" alt="Enlarged view">
+  </div>
+
+  <script>
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+    const closeBtn = document.querySelector(".modal-close");
+    const collageImages = document.querySelectorAll(".collage img");
+    const collages = document.querySelectorAll(".collage");
+
+    // Toggle enlargement when image is clicked
+    collageImages.forEach(img => {
+      img.addEventListener("click", function() {
+        // Remove active class from all images
+        collageImages.forEach(otherImg => {
+          otherImg.classList.remove("active");
+        });
+
+        // Add active class to clicked image
+        this.classList.add("active");
+      });
+    });
+
+    // Reset enlargement when clicking outside images
+    collages.forEach(collage => {
+      collage.addEventListener("click", function(event) {
+        if (event.target.tagName !== "IMG") {
+          collageImages.forEach(img => {
+            img.classList.remove("active");
+          });
+        }
+      });
+    });
+
+    // Open modal when image is double-clicked
+    collageImages.forEach(img => {
+      img.addEventListener("dblclick", function() {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        modalImg.alt = this.alt;
+      });
+    });
+
+    // Close modal when close button is clicked
+    closeBtn.addEventListener("click", function() {
+      modal.style.display = "none";
+    });
+
+    // Close modal when clicking outside the image
+    modal.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        modal.style.display = "none";
+      }
+    });
+  </script></body>
+</html>
